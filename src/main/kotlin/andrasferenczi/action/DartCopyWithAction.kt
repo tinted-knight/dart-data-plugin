@@ -64,7 +64,8 @@ class DartCopyWithAction : BaseAnAction() {
                     copyWithMethodName = configuration.copyWithMethodName,
                     useNewKeyword = configuration.useNewKeyword,
                     generateOptimizedCopy = generateOptimizedCopy,
-                    nullSafety = configuration.nullSafety
+                    nullSafety = configuration.nullSafety,
+                    useFunctions = configuration.functionsCopy
                 )
             )
 

@@ -1,16 +1,16 @@
 <idea-plugin>
-    <id>andrasferenczi.dart-data-plugin</id>
-    <name>Dart Data Class</name>
-    <vendor email="a.ferenczi.andras@gmail.com">Andras Ferenczi</vendor>
+  <id>andrasferenczi.dart-data-plugin</id>
+  <name>Dart Data Class</name>
+  <vendor email="a.ferenczi.andras@gmail.com">Andras Ferenczi</vendor>
 
-    <depends>Dart</depends>
-    <!--    To prevent it from being legacy-->
-    <depends>com.intellij.modules.lang</depends>
+  <depends>Dart</depends>
+  <!--    To prevent it from being legacy-->
+  <depends>com.intellij.modules.lang</depends>
 
-    <!-- 2018.3 - Based on Jetbrain's compatibility verification -->
-    <idea-version since-build="183"/>
+  <!-- 2018.3 - Based on Jetbrain's compatibility verification -->
+  <idea-version since-build="183"/>
 
-    <description><![CDATA[
+  <description><![CDATA[
         <p>Essential utility methods generator for Dart data classes.</p>
         <br/>
         <br/>
@@ -28,7 +28,7 @@
         <em>Not an official plugin.<em/>
     ]]></description>
 
-    <change-notes><![CDATA[
+  <change-notes><![CDATA[
         <ul>
             <li>v0.2.0
                 <ul>
@@ -66,50 +66,50 @@
             </li>
         </ul>
     ]]>
-    </change-notes>
+  </change-notes>
 
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
 
-    <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable
-                groupId="editor"
-                instance="andrasferenczi.configuration.DataClassConfigurable"
-        />
-    </extensions>
+  <extensions defaultExtensionNs="com.intellij">
+    <projectConfigurable
+            groupId="editor"
+            instance="andrasferenczi.configuration.DataClassConfigurable"
+    />
+  </extensions>
 
-    <actions>
-        <action id="andrasferenczi.action.NamedArgumentConstructorAction"
-                class="andrasferenczi.action.NamedArgumentConstructorAction"
-                text="Named Argument Constructor">
-            <add-to-group group-id="GenerateGroup"
-                          anchor="after"
-                          relative-to-action="Generate.Named.Constructor.Dart"/>
-        </action>
-        <action id="andrasferenczi.action.DartCopyWithAction"
-                class="andrasferenczi.action.DartCopyWithAction"
-                text="Copy">
-            <add-to-group group-id="GenerateGroup"
-                          anchor="after"
-                          relative-to-action="andrasferenczi.action.NamedArgumentConstructorAction"/>
-        </action>
-        <action id="andrasferenczi.action.MapAction"
-                class="andrasferenczi.action.MapAction"
-                text="toMap() and fromMap()">
-            <add-to-group group-id="GenerateGroup"
-                          anchor="after"
-                          relative-to-action="andrasferenczi.action.DartCopyWithAction"/>
-        </action>
-        <action id="andrasferenczi.action.FullDataAction"
-                class="andrasferenczi.action.FullDataAction"
-                text="Data Class Section">
-            <add-to-group group-id="GenerateGroup"
-                          anchor="after"
-                          relative-to-action="andrasferenczi.action.MapAction"/>
-        </action>
-    </actions>
+  <actions>
+    <action id="andrasferenczi.action.NamedArgumentConstructorAction"
+            class="andrasferenczi.action.NamedArgumentConstructorAction"
+            text="Named Argument Constructor">
+      <add-to-group group-id="GenerateGroup"
+                    anchor="after"
+                    relative-to-action="Generate.Named.Constructor.Dart"/>
+    </action>
+    <action id="andrasferenczi.action.DartCopyWithAction"
+            class="andrasferenczi.action.DartCopyWithAction"
+            text="Copy">
+      <add-to-group group-id="GenerateGroup"
+                    anchor="after"
+                    relative-to-action="andrasferenczi.action.NamedArgumentConstructorAction"/>
+    </action>
+    <action id="andrasferenczi.action.MapAction"
+            class="andrasferenczi.action.MapAction"
+            text="toMap() and fromMap()">
+      <add-to-group group-id="GenerateGroup"
+                    anchor="after"
+                    relative-to-action="andrasferenczi.action.DartCopyWithAction"/>
+    </action>
+    <action id="andrasferenczi.action.FullDataAction"
+            class="andrasferenczi.action.FullDataAction"
+            text="Data Class Section">
+      <add-to-group group-id="GenerateGroup"
+                    anchor="after"
+                    relative-to-action="andrasferenczi.action.MapAction"/>
+    </action>
+  </actions>
 </idea-plugin>

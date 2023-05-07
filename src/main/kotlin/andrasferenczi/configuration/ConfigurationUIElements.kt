@@ -13,6 +13,7 @@ class ConfigurationUIElements constructor(
     val useNewKeywordCheckbox: JCheckBox,
     val useConstKeywordForConstructorCheckbox: JCheckBox,
     val optimizeConstCopyCheckbox: JCheckBox,
+    val functionsCopyCheckbox: JCheckBox,
     val addKeyMapperForMapCheckbox: JCheckBox,
     val noImplicitCastsCheckbox: JCheckBox,
     val nullSafety: JCheckBox
@@ -26,6 +27,7 @@ class ConfigurationUIElements constructor(
             useNewKeyword = useNewKeywordCheckbox.isSelected,
             useConstForConstructor = useConstKeywordForConstructorCheckbox.isSelected,
             optimizeConstCopy = optimizeConstCopyCheckbox.isSelected,
+            functionsCopy = functionsCopyCheckbox.isSelected,
             addKeyMapperForMap = addKeyMapperForMapCheckbox.isSelected,
             noImplicitCasts = noImplicitCastsCheckbox.isSelected,
             nullSafety = nullSafety.isSelected
@@ -38,9 +40,9 @@ class ConfigurationUIElements constructor(
         useNewKeywordCheckbox.isSelected = configurationData.useNewKeyword
         useConstKeywordForConstructorCheckbox.isSelected = configurationData.useConstForConstructor
         optimizeConstCopyCheckbox.isSelected = configurationData.optimizeConstCopy
+        functionsCopyCheckbox.isSelected = configurationData.functionsCopy
         addKeyMapperForMapCheckbox.isSelected = configurationData.addKeyMapperForMap
         noImplicitCastsCheckbox.isSelected = configurationData.noImplicitCasts
         nullSafety.isSelected = configurationData.nullSafety
     }
-
 }

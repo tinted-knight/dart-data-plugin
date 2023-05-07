@@ -1,6 +1,7 @@
 package andrasferenczi.configuration
 
 import andrasferenczi.templater.TemplateConstants
+import javax.swing.JCheckBox
 
 // Input
 // Default values
@@ -10,6 +11,7 @@ data class ConfigurationData constructor(
     val useNewKeyword: Boolean,
     val useConstForConstructor: Boolean,
     val optimizeConstCopy: Boolean,
+    val functionsCopy: Boolean,
     val addKeyMapperForMap: Boolean,
     val noImplicitCasts: Boolean,
     val nullSafety: Boolean
@@ -21,6 +23,7 @@ data class ConfigurationData constructor(
             useNewKeyword = false,
             useConstForConstructor = true,
             optimizeConstCopy = false,
+            functionsCopy = true,
             addKeyMapperForMap = false,
             noImplicitCasts = true,
             nullSafety = true

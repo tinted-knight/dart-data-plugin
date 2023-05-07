@@ -10,7 +10,8 @@ data class CopyWithTemplateParams(
     val copyWithMethodName: String,
     val useNewKeyword: Boolean,
     val generateOptimizedCopy: Boolean,
-    val nullSafety: Boolean
+    val nullSafety: Boolean,
+    val useFunctions: Boolean
 )
 
 fun createCopyWithConstructorTemplate(
@@ -36,11 +37,21 @@ fun createCopyWithConstructorTemplate(
                     addNewLine()
 
                     variables.forEach {
-                        addTextSegment(it.type)
+                        if (params.useFunctions) {
+                            addTextSegment(it.type)
+                            if (params.nullSafety && it.isNullable) {
+                                addTextSegment("?")
+                            }
+                            addSpace()
+                            addTextSegment("Function()")
+                        } else {
+                            addTextSegment(it.type)
+                        }
+
                         if (params.nullSafety) {
                             addTextSegment("?")
                         }
-                        addTextSegment(" ")
+                        addSpace()
                         addTextSegment(it.publicVariableName)
                         addTextSegment(",")
                         addNewLine()
@@ -57,7 +68,7 @@ fun createCopyWithConstructorTemplate(
                 addSpace()
                 withParentheses {
 
-                    if(variables.isEmpty()) {
+                    if (variables.isEmpty()) {
                         // Always return if empty class
                         addTextSegment("true")
                     }
@@ -118,7 +129,16 @@ fun createCopyWithConstructorTemplate(
                     addSpace()
                     addTextSegment(it.publicVariableName)
                     addSpace()
-                    addTextSegment("??")
+                    // potato : potato != null ? potato() : this.potato
+                    if (params.useFunctions) {
+                        addTextSegment("!= null ?")
+                        addTextSegment(it.publicVariableName)
+                        addTextSegment("()")
+                        addSpace()
+                        addTextSegment(":")
+                    } else {
+                        addTextSegment("??")
+                    }
                     addSpace()
                     addTextSegment("this.")
                     addTextSegment(it.variableName)

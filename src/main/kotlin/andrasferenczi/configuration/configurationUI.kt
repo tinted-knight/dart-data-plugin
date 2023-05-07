@@ -22,6 +22,7 @@ private const val NO_CHECKBOX_LEFT_INSET = CHECKBOX_CHECK_AREA_WIDTH + CHECKBOX_
 fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
 
     val pane = JPanel(GridBagLayout())
+    var gridy = 0
 
     // ROW 1
     pane.add(
@@ -29,7 +30,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 0
+            gridy = gridy
             insets = Insets(TOP_INSET, NO_CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -41,7 +42,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
             fill = GridBagConstraints.HORIZONTAL
             weightx = 0.6
             gridx = 1
-            gridy = 0
+            gridy = gridy
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -56,7 +57,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 1
+            gridy = gridy++
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -71,7 +72,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 2
+            gridy = gridy++
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -86,7 +87,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 3
+            gridy = gridy++
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -100,7 +101,21 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 4
+            gridy = gridy++
+            insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
+        }
+    )
+
+    // ROW 5.1
+    val functionsCopyCheckbox = JCheckBox(
+        "copy function should functions"
+    )
+    pane.add(
+        functionsCopyCheckbox,
+        GridBagConstraints().apply {
+            fill = GridBagConstraints.HORIZONTAL
+            gridx = 0
+            gridy = gridy++
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -115,7 +130,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 5
+            gridy = gridy++
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -130,7 +145,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         GridBagConstraints().apply {
             fill = GridBagConstraints.HORIZONTAL
             gridx = 0
-            gridy = 6
+            gridy = gridy++
             insets = Insets(TOP_INSET, CHECKBOX_LEFT_INSET, BOTTOM_INSET, RIGHT_INSET)
         }
     )
@@ -168,6 +183,7 @@ fun createConfigurationUI(input: ConfigurationData): ConfigurationUIElements {
         useNewKeywordCheckbox,
         useConstKeywordForConstructorCheckbox,
         optimizeConstCopyCheckbox,
+        functionsCopyCheckbox,
         addKeyMapperForMapCheckbox,
         noImplicitCastsCheckbox,
         nullSafetyCheckbox
