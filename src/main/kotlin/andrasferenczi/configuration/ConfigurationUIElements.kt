@@ -8,19 +8,18 @@ import javax.swing.JTextField
 class ConfigurationUIElements constructor(
     val jComponent: JComponent,
 
-    val copyWithNameTextField: JTextField,
-    val useRequiredAnnotationCheckBox: JCheckBox,
-    val useNewKeywordCheckbox: JCheckBox,
-    val useConstKeywordForConstructorCheckbox: JCheckBox,
-    val optimizeConstCopyCheckbox: JCheckBox,
-    val functionsCopyCheckbox: JCheckBox,
-    val addKeyMapperForMapCheckbox: JCheckBox,
-    val noImplicitCastsCheckbox: JCheckBox,
-    val nullSafety: JCheckBox
+    private val copyWithNameTextField: JTextField,
+    private val useRequiredAnnotationCheckBox: JCheckBox,
+    private val useNewKeywordCheckbox: JCheckBox,
+    private val useConstKeywordForConstructorCheckbox: JCheckBox,
+    private val optimizeConstCopyCheckbox: JCheckBox,
+    private val functionsCopyCheckbox: JCheckBox,
+    private val addKeyMapperForMapCheckbox: JCheckBox,
+    private val noImplicitCastsCheckbox: JCheckBox,
+    private val nullSafety: JCheckBox
 ) {
 
-
-    fun extractCurrentConfigurationData() : ConfigurationData {
+    fun extractCurrentConfigurationData(): ConfigurationData {
         return ConfigurationData(
             copyWithMethodName = copyWithNameTextField.text,
             useRequiredAnnotation = useRequiredAnnotationCheckBox.isSelected,

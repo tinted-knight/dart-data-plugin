@@ -16,7 +16,7 @@ repositories {
 intellij {
     version.set("2022.2.4")
     type.set("IC") // Target IDE Platform
-    pluginName.set("Dart Data class methods generator")
+    pluginName.set("Timun Dart Data class methods generator")
     intellij.updateSinceUntilBuild.set(false)
     plugins.set(listOf("dart:222.3345.108"))
 }
