@@ -92,6 +92,24 @@ private fun Template.addToMap(params: MapTemplateParams) {
                 addSpace()
                 addTextSegment("this.")
                 addTextSegment(it.variableName)
+                if (it.type !in simpleTypes) {
+                    if (iterTypes.any { listType -> it.type.contains(listType) }) {
+                        addTextSegment(".map")
+                        withParentheses {
+                            withParentheses { addTextSegment("e") }
+                            addTextSegment(" => ")
+                            if (simpleTypes.any { sType -> it.type.contains(sType) }) {
+                                addTextSegment("e")
+                            } else {
+                                addTextSegment("e.${TemplateConstants.TO_MAP_METHOD_NAME}()")
+                            }
+                        }
+                        addTextSegment(".toList()")
+                    } else {
+                        if (it.isNullable) addTextSegment("?")
+                        addTextSegment(".${TemplateConstants.TO_MAP_METHOD_NAME}()")
+                    }
+                }
                 addComma()
                 addNewLine()
             }
@@ -99,6 +117,9 @@ private fun Template.addToMap(params: MapTemplateParams) {
         addSemicolon()
     }
 }
+
+private val simpleTypes = listOf("String", "int", "double", "float", "bool", "num");
+private val iterTypes = listOf("List", "Set");
 
 private fun Template.addFromMap(
     params: MapTemplateParams
@@ -155,28 +176,111 @@ private fun Template.addFromMap(
                 addTextSegment(it.publicVariableName)
                 addTextSegment(":")
                 addSpace()
-                addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
+                if (iterTypes.any { iter -> it.type.contains(iter) }) {
+                    when {
+                        it.type.contains("List") -> addTextSegment("List.from")
+                        it.type.contains("Set") -> addTextSegment("Set.from")
+                    }
+                    withParentheses {
+                        addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
 
-                withBrackets {
-                    "'${it.mapKeyString}'".also { keyParam ->
-                        if (addKeyMapper) {
-                            addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                        withBrackets {
+                            "'${it.mapKeyString}'".also { keyParam ->
+                                if (addKeyMapper) {
+                                    addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                                    withParentheses {
+                                        addTextSegment(keyParam)
+                                    }
+                                } else {
+                                    addTextSegment(keyParam)
+                                }
+                            }
+                        }
+                        addSpace()
+                        addTextSegment("as")
+                        addSpace()
+                        addTextSegment(it.type)
+                    }
+                } else {
+                    if (!it.isNullable) {
+                        if (it.type !in simpleTypes) {
+                            addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
                             withParentheses {
-                                addTextSegment(keyParam)
+                                addTextSegment("map['${it.mapKeyString}'] as Map<String,dynamic>")
                             }
                         } else {
-                            addTextSegment(keyParam)
+                            addSpace()
+                            addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
+
+                            withBrackets {
+                                "'${it.mapKeyString}'".also { keyParam ->
+                                    if (addKeyMapper) {
+                                        addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                                        withParentheses {
+                                            addTextSegment(keyParam)
+                                        }
+                                    } else {
+                                        addTextSegment(keyParam)
+                                    }
+                                }
+                            }
+                            addTextSegment(" as")
+                            addSpace()
+                            addTextSegment(it.type)
                         }
+                    } else {
+                        addSpace()
+                        addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
+
+                        withBrackets {
+                            "'${it.mapKeyString}'".also { keyParam ->
+                                if (addKeyMapper) {
+                                    addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                                    withParentheses {
+                                        addTextSegment(keyParam)
+                                    }
+                                } else {
+                                    addTextSegment(keyParam)
+                                }
+                            }
+                        }
+                        addTextSegment(" != null ")
+                        addTextSegment("? ")
+                        if (it.type !in simpleTypes) {
+                            addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
+                            withParentheses {
+                                addTextSegment("map['${it.mapKeyString}'] as Map<String,dynamic>")
+                            }
+                        } else {
+                            addSpace()
+                            addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
+
+                            withBrackets {
+                                "'${it.mapKeyString}'".also { keyParam ->
+                                    if (addKeyMapper) {
+                                        addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                                        withParentheses {
+                                            addTextSegment(keyParam)
+                                        }
+                                    } else {
+                                        addTextSegment(keyParam)
+                                    }
+                                }
+                            }
+                            addTextSegment("as")
+                            addSpace()
+                            addTextSegment(it.type)
+                        }
+                        addTextSegment(" : null")
                     }
-                }
 
-                if(noImplicitCasts) {
-                    addSpace()
-                    addTextSegment("as")
-                    addSpace()
-                    addTextSegment(it.type)
+//                if (noImplicitCasts) {
+//                    addSpace()
+//                    addTextSegment("as")
+//                    addSpace()
+//                    addTextSegment(it.type)
+//                }
                 }
-
                 addComma()
                 addNewLine()
             }
