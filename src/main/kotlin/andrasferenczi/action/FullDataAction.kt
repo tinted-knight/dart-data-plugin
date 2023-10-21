@@ -4,6 +4,7 @@ import andrasferenczi.action.init.ActionData
 import andrasferenczi.action.data.GenerationData
 import andrasferenczi.action.data.PerformAction
 import andrasferenczi.action.data.combineAll
+import andrasferenczi.action.my.JsonAction
 import andrasferenczi.action.my.MyEqualsAction
 import andrasferenczi.action.my.MyHashCodeAction
 import andrasferenczi.action.my.MyToStringAction
@@ -44,7 +45,8 @@ class FullDataAction : BaseAnAction() {
             MyHashCodeAction.Companion,
             MyToStringAction.Companion,
             DartCopyWithAction.Companion,
-            MapAction.Companion
+            MapAction.Companion,
+            JsonAction.Companion
         )
             .map { it.processAction(generationData) }
 
