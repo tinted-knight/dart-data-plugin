@@ -92,22 +92,28 @@ private fun Template.addToMap(params: MapTemplateParams) {
                 addSpace()
                 addTextSegment("this.")
                 addTextSegment(it.variableName)
+
                 if (it.type !in simpleTypes) {
-                    if (it.isNullable) addTextSegment("?")
-                    if (it.type.contains("List")) {
-                        addTextSegment(".map")
-                        withParentheses {
-                            withParentheses { addTextSegment("e") }
-                            addTextSegment(" => ")
-                            if (simpleTypes.any { sType -> it.type.contains(sType) }) {
-                                addTextSegment("e")
-                            } else {
-                                addTextSegment("e.${TemplateConstants.TO_MAP_METHOD_NAME}()")
-                            }
-                        }
-                        addTextSegment(".toList()")
+                    if (it.type.contains("DateTime")) {
+                        if (it.isNullable) addTextSegment("?")
+                        addTextSegment(".toIso8601String()")
                     } else {
-                        addTextSegment(".${TemplateConstants.TO_MAP_METHOD_NAME}()")
+                        if (it.isNullable) addTextSegment("?")
+                        if (it.type.contains("List")) {
+                            addTextSegment(".map")
+                            withParentheses {
+                                withParentheses { addTextSegment("e") }
+                                addTextSegment(" => ")
+                                if (simpleTypes.any { sType -> it.type.contains(sType) }) {
+                                    addTextSegment("e")
+                                } else {
+                                    addTextSegment("e.${TemplateConstants.TO_MAP_METHOD_NAME}()")
+                                }
+                            }
+                            addTextSegment(".toList()")
+                        } else {
+                            addTextSegment(".${TemplateConstants.TO_MAP_METHOD_NAME}()")
+                        }
                     }
                 }
                 addComma()
@@ -256,9 +262,16 @@ private fun Template.addFromMap(
                     // MARK: - ! Iterable
                     if (!it.isNullable) {
                         if (it.type !in simpleTypes) {
-                            addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
-                            withParentheses {
-                                addTextSegment("map['${it.mapKeyString}'] as Map<String,dynamic>")
+                            if (it.type.contains("DateTime")) {
+                                addTextSegment("DateTime.parse")
+                                withParentheses {
+                                    addTextSegment("map['${it.mapKeyString}'] as String")
+                                }
+                            } else {
+                                addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
+                                withParentheses {
+                                    addTextSegment("map['${it.mapKeyString}'] as Map<String,dynamic>")
+                                }
                             }
                         } else {
                             addSpace()
@@ -299,9 +312,16 @@ private fun Template.addFromMap(
                         addTextSegment(" != null ")
                         addTextSegment("? ")
                         if (it.type !in simpleTypes) {
-                            addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
-                            withParentheses {
-                                addTextSegment("map['${it.mapKeyString}'] as Map<String,dynamic>")
+                            if (it.type.contains("DateTime")) {
+                                addTextSegment("DateTime.parse")
+                                withParentheses {
+                                    addTextSegment("map['${it.mapKeyString}'] as String")
+                                }
+                            } else {
+                                addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
+                                withParentheses {
+                                    addTextSegment("map['${it.mapKeyString}'] as Map<String,dynamic>")
+                                }
                             }
                         } else {
                             addSpace()
