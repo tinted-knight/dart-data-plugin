@@ -29,6 +29,12 @@ inline fun Template.withSingleQuotes(action: Template.() -> Unit) {
     this.addTextSegment("'")
 }
 
+inline fun Template.withDoubleQuotes(action: Template.() -> Unit) {
+    this.addTextSegment("\"")
+    this.action()
+    this.addTextSegment("\"")
+}
+
 
 // For different editor highlight in case of dividers
 

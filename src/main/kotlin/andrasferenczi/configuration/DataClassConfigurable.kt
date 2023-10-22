@@ -5,7 +5,6 @@ import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.Project
 import javax.swing.*
 
-
 class DataClassConfigurable(
     private val project: Project
 ) : Configurable, Disposable {
@@ -31,7 +30,7 @@ class DataClassConfigurable(
         lastSavedConfigurationData = dataToSave.copy()
     }
 
-    override fun createComponent(): JComponent? {
+    override fun createComponent(): JComponent {
         // This data will be replaced in the reset() call with the right values
         val ui = createConfigurationUI(ConfigurationData.TEST_DATA)
         this.uiElements = ui

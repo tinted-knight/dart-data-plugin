@@ -15,10 +15,13 @@ import andrasferenczi.templater.AliasedVariableTemplateParamImpl
 import andrasferenczi.templater.MapTemplateParams
 import andrasferenczi.templater.createMapTemplate
 import com.intellij.codeInsight.template.TemplateManager
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.jetbrains.lang.dart.psi.DartClassDefinition
 
 class MapAction : BaseAnAction() {
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
 
     override fun processAction(
         event: AnActionEvent,

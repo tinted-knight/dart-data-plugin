@@ -23,7 +23,7 @@ data class ConfigurationData constructor(
             useNewKeyword = false,
             useConstForConstructor = true,
             optimizeConstCopy = false,
-            functionsCopy = true,
+            functionsCopy = false,
             addKeyMapperForMap = false,
             noImplicitCasts = true,
             nullSafety = true
