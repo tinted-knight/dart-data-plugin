@@ -93,7 +93,8 @@ private fun Template.addToMap(params: MapTemplateParams) {
                 addTextSegment("this.")
                 addTextSegment(it.variableName)
                 if (it.type !in simpleTypes) {
-                    if (iterTypes.any { listType -> it.type.contains(listType) }) {
+                    if (it.isNullable) addTextSegment("?")
+                    if (it.type.contains("List")) {
                         addTextSegment(".map")
                         withParentheses {
                             withParentheses { addTextSegment("e") }
@@ -106,7 +107,6 @@ private fun Template.addToMap(params: MapTemplateParams) {
                         }
                         addTextSegment(".toList()")
                     } else {
-                        if (it.isNullable) addTextSegment("?")
                         addTextSegment(".${TemplateConstants.TO_MAP_METHOD_NAME}()")
                     }
                 }
@@ -119,7 +119,6 @@ private fun Template.addToMap(params: MapTemplateParams) {
 }
 
 private val simpleTypes = listOf("String", "int", "double", "float", "bool", "num");
-private val iterTypes = listOf("List", "Set");
 
 private fun Template.addFromMap(
     params: MapTemplateParams
@@ -176,12 +175,9 @@ private fun Template.addFromMap(
                 addTextSegment(it.publicVariableName)
                 addTextSegment(":")
                 addSpace()
-                if (iterTypes.any { iter -> it.type.contains(iter) }) {
-                    when {
-                        it.type.contains("List") -> addTextSegment("List.from")
-                        it.type.contains("Set") -> addTextSegment("Set.from")
-                    }
-                    withParentheses {
+                // MARK: - Iterable
+                if (it.type.contains("List")) {
+                    if (it.isNullable) {
                         addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
 
                         withBrackets {
@@ -196,12 +192,68 @@ private fun Template.addFromMap(
                                 }
                             }
                         }
-                        addSpace()
-                        addTextSegment("as")
-                        addSpace()
-                        addTextSegment(it.type)
+                        addTextSegment(" != null ? ")
                     }
+                    addTextSegment("${it.type}.from")
+                    // MARK: - Iter prim
+                    if (simpleTypes.any { st -> it.type.contains(st) }) {
+                        withParentheses {
+                            addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
+
+                            withBrackets {
+                                "'${it.mapKeyString}'".also { keyParam ->
+                                    if (addKeyMapper) {
+                                        addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                                        withParentheses {
+                                            addTextSegment(keyParam)
+                                        }
+                                    } else {
+                                        addTextSegment(keyParam)
+                                    }
+                                }
+                            }
+                            addSpace()
+                            addTextSegment("as")
+                            addSpace()
+                            addTextSegment(it.type)
+                        }
+                    } else {
+                        // MARK: - Iter custom
+                        withParentheses {
+                            withParentheses {
+                                addTextSegment(TemplateConstants.MAP_VARIABLE_NAME)
+
+                                withBrackets {
+                                    "'${it.mapKeyString}'".also { keyParam ->
+                                        if (addKeyMapper) {
+                                            addTextSegment(TemplateConstants.KEYMAPPER_VARIABLE_NAME)
+                                            withParentheses {
+                                                addTextSegment(keyParam)
+                                            }
+                                        } else {
+                                            addTextSegment(keyParam)
+                                        }
+                                    }
+                                }
+                                addSpace()
+                                addTextSegment("as")
+                                addSpace()
+                                addTextSegment("List<Map<String, dynamic>>")
+                            }
+                            addTextSegment(".map")
+                            withParentheses {
+                                addTextSegment("(e) => ")
+                                val match = Regex("<(.*)>").find(it.type)
+                                val generic = match?.groupValues?.get(1) ?: "T"
+                                addTextSegment("$generic.${TemplateConstants.FROM_MAP_METHOD_NAME}")
+                                addTextSegment("(e)")
+                            }
+                            addComma()
+                        }
+                    }
+                    if (it.isNullable) addTextSegment(" : null")
                 } else {
+                    // MARK: - ! Iterable
                     if (!it.isNullable) {
                         if (it.type !in simpleTypes) {
                             addTextSegment("${it.type}.${TemplateConstants.FROM_MAP_METHOD_NAME}")
